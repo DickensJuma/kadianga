@@ -8,7 +8,7 @@ router.get('/', (req, res) =>
 
 
 router.post('/quote', (req, res) => {
-    sgMail.setApiKey(process.env.API_KEY);
+    sgMail.setApiKey('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');
     const msg = {
         to: 'dickensjuma13@gmail.com',
         from: 'orders@kadianga.com',
