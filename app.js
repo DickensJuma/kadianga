@@ -15,6 +15,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //static folder
+app.use( express.static( "public" ) );
 app.use(express.static('public'));
 app.use(morgan('tiny'));
 

@@ -5,7 +5,92 @@
     <title>Kadianga Electricals Ltd</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <link href="jquery-gallery.css" type="text/css" rel="stylesheet"/>
+  <style>
+   * {margin: 0; padding: 0;}/*just for better preview*/
+ul.gallery-slideshow > img, ul {margin: 0; padding: 0;}
+ul.gallery-slideshow {
+  position: relative;
+  list-style: none;
+  background: #000000;
+  overflow: hidden;
+  min-height:300px;
+}
+ul.gallery-slideshow li img {
+  position: absolute;
+  min-width: 100%; min-height: 100%;
+}
+/*gallery controls*/
+.gallery-control{
+  position: absolute; z-index: 1;
+  top: 0; bottom: 0;
+  width: 40px; height: 40px;
+  background: rgba(0,0,0,0.8);
+  margin: auto;
+  cursor: pointer;
+}
+.gallery-control.prev { left: -5px; }
+.gallery-control.next { right: -5px; }
+.gallery-control.trigger {
+  left: 0; right: 0;
+  width: 50px; height: 50px;
+  border-radius:50%;-webkit-border-radius:50%;-moz-border-radius:50%;
+}
+.gallery-control:after{
+  position: absolute;
+  z-index: 2;
+  top: 0; bottom: 0; left: 0; right: 0;
+  margin: auto;
+  content: "";
+  width: 20px; height: 20px;
+  box-sizing: border-box;
+  border-style: solid;
+  border-color: transparent;
+}
+.gallery-control.prev:after {
+  border-width: 10px 15px 10px 0px;
+  border-right-color: #ffffff;
+}
+.gallery-control.next:after {
+  border-width: 10px 0px 10px 15px;
+  border-left-color: #ffffff;
+}
+.gallery-control.trigger.pause:after{
+  border-style: double;
+  border-width: 0px 0px 0px 20px;
+  border-color: #ffffff;
+}
+.gallery-control.trigger.play:after{
+  left: 5px;
+  border-width: 10px 0px 10px 20px;
+  border-left-color: #ffffff;
+}
+/*gallery navigation*/
+ul.gallery-slideshow ul.gallery-navbar{
+  position: absolute;
+  bottom: 5%;
+  width: 100%;
+  text-align: center;
+}
+ul.gallery-navbar li{
+  all: unset;
+  position: relative;
+  display: inline-block;
+  width: 15px; height: 15px;
+  background: rgba(255,255,255,0.5);
+  margin: 10px;
+  border-radius:50%;-webkit-border-radius:50%;-moz-border-radius:50%;
+  cursor: pointer;
+}
+ul.gallery-navbar li.active{ background: rgba(255,255,255,1); }
+/**STATES**/
+ul.gallery-navbar li:hover, .gallery-control:hover{ transform: scale(0.9); }
+ul.gallery-navbar li:hover{ background: rgba(255,255,255,0.8); }
+ul.gallery-navbar li:active, .gallery-control:active { transform: scale(0.8); }
+</style>
+   
+ 
+</section>
     <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap"
         rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
@@ -31,6 +116,7 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
+
 <body class="goto-here">
     <div><%- body %></div>
     <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
@@ -50,10 +136,166 @@
     <script src="js/jquery.animateNumber.min.js"></script>
     <script src="js/bootstrap-datepicker.js"></script>
     <script src="js/scrollax.min.js"></script>
-    <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
     <script src="js/google-map.js"></script>
     <script src="js/main.js"></script>
+    <link href="jquery-gallery.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" 
+        integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" 
+        crossorigin="anonymous"></script>
+<script src="jquery-gallery.js"></script>
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script><br/>
+<script src="jquery-gallery.js" type="text/javascript"></script>
+  
+
+<script>
+ 
+    ;(function ( $, window, document, undefined ) {
+    
+    function Slideshow(element, options) {
+        //Variables declaration
+        this.element = element;
+        this.intervalID = null;
+        this.current = 0;
+        this.items = $(this.element).children();
+        this.navBar;
+        this.navPrev;
+        this.navNext;
+        this.trigger;
+        this.defaults = {
+          interval: 3000,
+          width: 400,
+          height: 350
+        }
+        //Merge configured options to defaults
+        this.config = $.extend(this.defaults, options);
+        //Initialize Slideshow
+        this.init();
+    }
+    
+    Slideshow.prototype = {
+    
+        init: function() {
+          //Set controls & config
+          this.setup();
+          //Set event handler
+          this.handleEvent();
+          //Start animation
+          this.start();
+        },
+        setup: function() {
+          //Append controls
+          this.navBar = $('<ul>').addClass('gallery-navbar').appendTo(this.element);
+          this.items.each(function(index){
+            $('<li>').addClass(index === 0 ? 'active' : '').attr('data-nav','select').attr('data-index',index).appendTo(this.navBar);
+          }.bind(this));
+    
+          this.navPrev = $('<div>').addClass('gallery-control fade prev').attr('data-nav','prev').appendTo(this.element);
+          this.navNext = $('<div>').addClass('gallery-control fade next').attr('data-nav','next').appendTo(this.element);
+    
+          this.trigger = $('<div>').addClass('gallery-control trigger fade pause').attr('data-nav','trigger').appendTo(this.element);
+    
+          //Hide controls
+          $(this.element).find('.fade').hide();
+    
+          //Modify defaults
+          $(this.element).css('width', this.config.width).css('height', this.config.height);
+        },
+        handleEvent: function() {
+          //Click event
+          //Detect what item is clicked inside the gallery
+          $(this.element).on('click', function(event) {
+    
+            var dataNav = $(event.target).attr('data-nav');
+            var dataIndex = $(event.target).attr('data-index');
+    
+            if(dataNav){
+    
+              //Call functions depending on item clicked
+              if(dataNav === 'trigger'){
+                if(this.intervalID){
+                  this.stop();
+                }else{
+                  this.start();
+                }
+              }else{
+                this.showItem(dataNav, dataIndex);
+                this.stop();
+              }
+    
+              //Style item
+              this.setTrigger();
+            }
+    
+          }.bind(this));
+    
+          //Mouseover/mouseout event
+          $(this.element).on('mouseover', function() {
+            $(this.element).find('.fade').fadeIn();
+          }.bind(this));
+    
+          $(this.element).on('mouseleave', function() {
+            $(this.element).find('.fade').fadeOut();
+          }.bind(this));
+    
+    
+        },
+        setTrigger: function() {
+          if(this.intervalID){
+            this.trigger.removeClass('play').addClass('pause');
+          }else{
+            this.trigger.removeClass('pause').addClass('play');
+          }
+        },
+        start: function() {
+          this.intervalID = setInterval(this.showItem.bind(this), this.config.interval);
+        },
+        stop: function() {
+          clearInterval(this.intervalID);
+          this.intervalID = null;
+        },
+        setCurrent(nav,index) {
+          switch(nav) {
+            case 'select':
+              this.current = index;
+              break;
+            case 'prev':
+              this.current === 0 ? this.current = this.items.length-1 : this.current-- ;
+              break;
+            case 'next':
+            default:
+              this.current === this.items.length-1 ? this.current = 0 : this.current++ ;
+            break;
+          }
+        },
+        showItem: function(nav,index) {
+          this.setCurrent(nav,index);
+          this.items.hide().eq(this.current).fadeIn();
+          this.navBar.children().removeClass('active').eq(this.current).addClass('active');
+        }
+    };
+    
+    //Prevent  multiple instantiations
+    $.fn.slideshow = function ( options ) {
+      return this.each(function () {
+        var instance = "plugin_jQuerySimpleGallerySlideshow";
+        if (!$.data(this, instance)) {
+            $.data(this, instance, new Slideshow( this, options ));
+        }
+      });
+    };
+    
+    })( jQuery, window, document );
+    
+    //Attach plugin to slideshow with ".gallery-slideshow" class
+    $(function() {
+    $('.gallery-slideshow').slideshow({
+    interval: 3000,
+    width: window.innerWidth,
+    height: window.innerHeight
+    });
+    });</script>
+
 </body>
 
 </html>
