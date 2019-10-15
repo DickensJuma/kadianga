@@ -6,6 +6,8 @@ const sgMail = require('@sendgrid/mail');
 router.get('/', (req, res) =>
     res.render('home'));
 
+    router.get('/products', (req, res) =>
+    res.render('products'));
 
 router.post('/quote', (req, res) => {
     sgMail.setApiKey(process.env.API_KEY);
