@@ -12,7 +12,7 @@ router.get('/', (req, res) =>
 router.post('/quote', (req, res) => {
     sgMail.setApiKey(process.env.API_KEY);
     const msg = {
-        to: 'dickensjuma13@gmail.com',
+        to: 'silasdianga4@gmail.com',
         from: 'orders@kadianga.com',
         subject: 'Orders',
         html: `<strong>Name: ${req.body.name} <br>Email: ${req.body.email}<br>
