@@ -1,3 +1,4 @@
+
 <section class="ftco-section ftco-no-pt ftco-no-pb py-5 bg-light">
 	<div class="container py-4">
 	  <div class="row d-flex justify-content-center py-5">
@@ -6,10 +7,10 @@
 			<span>Get e-mail updates about our latest shops and special offers</span>
 		</div>
 		<div class="col-md-6 d-flex align-items-center">
-		  <form action="subscribe" class="subscribe-form">
+		  <form action="/subscribe" method="POST" class="subscribe-form">
 			<div class="form-group d-flex">
-			  <input type="text" class="form-control" placeholder="Enter email address">
-			  <input type="submit" value="Subscribe" class="submit px-3">
+			  <input type="email" id="email" name="email" class="form-control" placeholder="Enter email address" value="">
+			  <input type="submit" value="Submit" class="submit px-3">
 			</div>
 		  </form>
 		</div>
@@ -41,9 +42,9 @@
 					<div class="ftco-footer-widget mb-4 ml-md-5">
 					  <h2 class="ftco-heading-2">Menu</h2>
 					  <ul class="list-unstyled">
-						<li><a href="/" class="py-2 d-block">Shop</a></li>
+						<li><a href="/products" class="py-2 d-block">Shop</a></li>
 						 <!-- <li><a href="#" class="py-2 d-block">About</a></li> -->
-						<li><a href="#" class="py-2 d-block">Electrical Product</a></li> 
+						<li><a href="#" class="py-2 d-block">Electrical Products</a></li> 
 						<li><a href="/contact" class="py-2 d-block">Contact Us</a></li>
 					  </ul>
 					</div>
@@ -60,7 +61,7 @@
 						  </ul>
 						  <ul class="list-unstyled">
 							<li><a href="#" class="py-2 d-block">FAQs</a></li>
-							<li><a href="#" class="py-2 d-block">Contact</a></li>
+							<li><a href="/contact" class="py-2 d-block">Contact</a></li>
 						  </ul>
 						</div>
 					</div>
@@ -72,8 +73,8 @@
 							<ul>
 								<li><span class="icon icon-map-marker"></span><span class="text">Kisumu YWCA</span></li>
 								<!-- <li><a href="#"><span class="icon icon-phone"></span><span class="text">+254 710 128 421</span></a></li> -->
-								<li><a href="#"><span class="icon icon-telephone"></span><span class="text">+254 736 565 612</span></a></li>
-								<li><a href="#"><span class="icon icon-envelope"></span><span
+								<li><a href="/contact"><span class="icon icon-telephone"></span><span class="text">+254 736 565 612</span></a></li>
+								<li><a href="/contact"><span class="icon icon-envelope"></span><span
 											class="text">silasdianga4@gmail.com</span></a></li>
 							</ul>
 						</div>
