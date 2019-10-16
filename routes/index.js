@@ -7,8 +7,29 @@ router.get('/', (req, res) =>
     res.render('home'));
 
     router.get('/products', (req, res) =>
-    res.render('products'));
+    res.render('productSlide'));
 
+    router.get('/contact', (req, res) =>
+    res.render('contact'));
+    router.get('/wishlist', (req, res) =>
+    res.render('wishlist'));
+
+
+router.post('/subscribe', (req, res) => {
+    sgMail.setApiKey(process.env.API_KEY);
+    const msg = {
+        to: 'silasdianga4@gmail.com',
+        from: '[Kadianga Electrical Limited]',
+        subject: 'Subscribtion request',
+        html: `<br>Email: ${req.body.email}<br>`,
+    };
+    sgMail.send(msg);
+    res.status(200)
+    console.log("sucess");
+    req.flash('success_msg', 'Subscribtion request sucessfully!');
+    res.redirect("/")
+
+});
 router.post('/quote', (req, res) => {
     sgMail.setApiKey(process.env.API_KEY);
     const msg = {
