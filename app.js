@@ -1,23 +1,24 @@
 const express = require('express');
-const SGmail = require('@sendgrid/mail');
 const bodyParser=require('body-parser')
 const morgan = require('morgan')
 const flash = require('connect-flash');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const compression = require('compression');
 require('dotenv').config();
 const app = express();
 const expressLayouts = require('express-ejs-layouts');
 const port = process.env.PORT || 3000;
-
+const expressValidator = require('express-validator');
 //body-parser
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(compression());
 //static folder
-app.use( express.static( "public" ) );
+
 app.use(express.static('public'));
 app.use(morgan('tiny'));
+
 
 //ejs 
 app.use(expressLayouts);
@@ -48,6 +49,11 @@ app.use(function (req, res, next) {
 
 //routes
 app.use('/', require('./routes/index.js'));
+
+// Bring in routes 
+const contact = require('./routes/index.js');
+// Use Routes
+app.use('/contact', contact);
 
 app.listen(port, () => {
 console.log(`listening on port ${port}`)

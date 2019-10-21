@@ -1,53 +1,155 @@
-const express = require('express');
-const router = express.Router();
+
+    const express = require('express');
+    const nodemailer = require('nodemailer');
+    const flash = require('connect-flash');
+    const session = require('express-session');
+    
 require('dotenv').config();
-const sgMail = require('@sendgrid/mail');
-var nodemailer = require("nodemailer");
-
-router.get('/', (req, res) =>
-    res.render('home'));
-
-    router.get('/products', (req, res) =>
-    res.render('productSlide'));
-
-    router.get('/contact', (req, res) =>
-    res.render('contact'));
-    router.get('/wishlist', (req, res) =>
-    res.render('wishlist'));
-
    
-router.post('/subscribe', (req, res) => {
-    sgMail.setApiKey(process.env.API_KEY);
-    const msg = {
-        to: 'dickensjuma13@gmail.com',
-        from: '[Kadianga Electrical Limited]',
-        subject: 'Subscribtion request',
-        html: `<br>Email: ${req.body.email}<br>`,
-    };
-    sgMail.send(msg,function(err,json){
-        if(err){ return console.error(err);}
-        console.log(json);
-        console.log("sucess");
-        req.flash('success_msg', 'Subscribtion request sucessfully!');
-        res.redirect("/")
+
+var router = express.Router();
+
+    
+    // Express Session Middleware
+    router.use(session({
+        secret: 'ninja fox',
+        resave: true,
+        saveUninitialized: true
+    }));
+    
+    // Express Messages Middleware
+    router.use(require('connect-flash')());
+    router.use(function (req, res, next) {
+        res.locals.messages = require('express-messages')(req, res);
+        next();
     });
     
+    router.get('/', (req, res) =>
+res.render('home'));
+    // @route  GET contact
+    // @desc   GET Contact page
+    // @access Public
+    router.get('/contact', function (req, res) {
+        res.render('contact', {
+            title:'Contact Us'
+        });
+    });
+    
+    // @route  POST contact
+    // @desc   POST Contact information
+    // @access Public
+    router.post('/contact',(req,res)=>{
+    
+                // The actual output format of the message, that it is going to be sent by email
+                const output = `
+                <p>You have a new contact request</p>
+                <h3>Contact Details</h3>
+                <ul> 
+                    <li>Name: ${req.body.name}</li>
+                    <li>Email: ${req.body.email}</li>
+                    <li>Subject: ${req.body.phone}</li>
+                </ul>
+                <h3>Message</h3>
+                <p>${req.body.quote}</p>
+                `;
+    
+            // NODEMAILER
+            // create reusable transporter object using the default SMTP transport
+            let transporter = nodemailer.createTransport({
+                host: 'gmail',
+                service:'gmail',
+                secureConnection: false, // TLS requires secureConnection to be false
+                port: 587,
+                secure: false, // true for 465, false for other ports
+                auth: {
+                    user: 'dickensjuma13@gmail.com', // generated ethereal user
+                    pass: '0704868023dj' // generated ethereal password
+                },
+                tls: {
+                ciphers:'SSLv3'
+                }
+            });
+    
+            // setup email data with unicode symbols
+            let mailOptions = {
+                from: '"Kadianga Electrical Ltd" orders@kadianga.co.ke', // sender address
+                to: 'kennedyojwang57@gmail.com', // list of receivers
+                phone: 'Product Request', // Subject line
+                html:output // html body
+            };
+    
+            // send mail with defined transport object
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    return console.log(error);
+                } else {
+                    console.log('Message sent: %s', info.messageId);
+                    console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+                }
+            });
+            
+            req.flash('success_msg', 'Order sent sucessfully!');
+            res.redirect("/");
+    });
+    
+    router.post('/subscribe',(req,res)=>{
+    
+        // The actual output format of the message, that it is going to be sent by email
+        const output = `
+        <p>New subscribtion request</p>
+        <h3>Contact Details</h3>
+        <ul> 
+            
+            <li>Email: ${req.body.email}</li>
+           
+        </ul>
+        <h3>Message</h3>
+        <p>You have a new subscribtion request from a customer</p>
+        `;
 
-});
-router.post('/quote', (req, res) => {
-    sgMail.setApiKey(process.env.API_KEY);
-    const msg = {
-        to: 'dickensjuma13@gmail.com',
-        from: '[Kadianga Electrical Limited]',
-        subject: 'Orders',
-        html: `<strong>Name: ${req.body.name} <br>Email: ${req.body.email}<br>
-        Phone No: ${req.body.phone}<br><br>${req.body.quote}</strong>`,
+    // NODEMAILER
+    // create reusable transporter object using the default SMTP transport
+    let transporter = nodemailer.createTransport({
+        host: 'gmail',
+        service:'gmail',
+        secureConnection: false, // TLS requires secureConnection to be false
+        port: 587,
+        secure: false, // true for 465, false for other ports
+        auth: {
+            user: 'dickensjuma13@gmail.com', // generated ethereal user
+            pass: '0704868023dj' // generated ethereal password
+        },
+        tls: {
+        ciphers:'SSLv3'
+        }
+    });
+
+    // setup email data with unicode symbols
+    let mailOptions = {
+        from: '"Kadianga Electrical Ltd" orders@kadianga.co.ke', // sender address
+        to: 'kennedyojwang57@gmail.com', // list of receivers
+    
+        html:output // html body
     };
-    sgMail.send(msg);
-    res.status(200)
-    console.log("sucess");
-    req.flash('success_msg', 'Order sent sucessfully!');
-    res.redirect("/")
 
+    // send mail with defined transport object
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            return console.log(error);
+        } else {
+            console.log('Message sent: %s', info.messageId);
+            console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+        }
+    });
+    
+    req.flash('success_msg', 'You subscribed sucessfully!');
+    res.redirect("/");
 });
+ 
+        
+   
+router.get('/products', (req, res) =>
+    res.render('products'));
+
+ 
 module.exports = router;
