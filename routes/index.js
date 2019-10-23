@@ -216,7 +216,7 @@ res.render('home'));
                                     <li>Subject: ${req.body.phone}</li>
                                 </ul>
                                 <h3>Message</h3>
-                                <p>${req.body.quote}</p></strong> 
+                                 <p>${req.body.quote}</p></strong> 
                                                                                         </td>
                                                                                     </tr>
                                                                                     <tr>
@@ -354,8 +354,8 @@ res.render('home'));
                 port: 587,
                 secure: false, // true for 465, false for other ports
                 auth: {
-                    user: 'dickensjuma13@gmail.com', // generated ethereal user
-                    pass: '0704868023dj' // generated ethereal password
+                    user: 'hlandsjunior@gmail.com', // generated ethereal user
+                    pass: 'kisumu200' // generated ethereal password
                 },
                 tls: {
                 ciphers:'SSLv3'
@@ -734,7 +734,7 @@ res.render('home'));
         secure: false, // true for 465, false for other ports
         auth: {
             user: 'dickensjuma13@gmail.com', // generated ethereal user
-            pass: '0704868023dj' // generated ethereal password
+            pass: 'kisumu200' // generated ethereal password
         },
         tls: {
         ciphers:'SSLv3'
