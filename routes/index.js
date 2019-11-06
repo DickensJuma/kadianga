@@ -213,7 +213,7 @@ res.render('home'));
                                 <ul> 
                                     <li>Name: ${req.body.name}</li>
                                     <li>Email: ${req.body.email}</li>
-                                    <li>Subject: ${req.body.phone}</li>
+                                    <li>Phone No.: ${req.body.phone}</li>
                                 </ul>
                                 <h3>Message</h3>
                                  <p>${req.body.quote}</p></strong> 
@@ -354,8 +354,8 @@ res.render('home'));
                 port: 587,
                 secure: false, // true for 465, false for other ports
                 auth: {
-                    user: 'hlandsjunior@gmail.com', // generated ethereal user
-                    pass: 'kisumu200' // generated ethereal password
+                    user: 'dickensjuma13@gmail.com', // generated ethereal user
+                    pass: '0704868023dj' // generated ethereal password
                 },
                 tls: {
                 ciphers:'SSLv3'
@@ -366,7 +366,7 @@ res.render('home'));
             let mailOptions = {
                 from: '"Kadianga Electrical Ltd" orders@kadianga.co.ke', // sender address
                 to: `kennedyojwang57@gmail.com`, // list of receivers
-                phone: 'Product Request', // Subject line
+                subject: 'Product Request', // Subject line
                 html:output // html body
             };
     
@@ -492,7 +492,7 @@ res.render('home'));
 																<table width="100%" border="0" cellspacing="0" cellpadding="0">
 																	<tr>
 																		<td class="text-top m-center" style="color:#7d7e80; font-family:'Quicksand', Arial,sans-serif; font-size:12px; line-height:24px; text-align:left;">
-																			Start the spring with a good deal!
+																			Start your project with quality electrical products & a good deal!
 																		</td>
 																	</tr>
 																</table>
@@ -503,7 +503,7 @@ res.render('home'));
 																<table width="100%" border="0" cellspacing="0" cellpadding="0">
 																	<tr>
 																		<td class="text-top righten m-center" style="color:#7d7e80; font-family:'Quicksand', Arial,sans-serif; font-size:12px; line-height:24px; text-align:right;">
-																			No images? <a href="#" target="_blank" class="link" style="color:#d85d5c; text-decoration:none;"><span class="link" style="color:#d85d5c; text-decoration:none;">View online.</span></a>
+																			<a href="#" target="_blank" class="link" style="color:#d85d5c; text-decoration:none;"><span class="link" style="color:#d85d5c; text-decoration:none;"></span></a>
 																		</td>
 																	</tr>
 																</table>
@@ -734,7 +734,7 @@ res.render('home'));
         secure: false, // true for 465, false for other ports
         auth: {
             user: 'dickensjuma13@gmail.com', // generated ethereal user
-            pass: 'kisumu200' // generated ethereal password
+            pass: '0704868023dj' // generated ethereal password
         },
         tls: {
         ciphers:'SSLv3'
@@ -745,7 +745,7 @@ res.render('home'));
     let mailOptions = {
         from: '"Kadianga Electrical Ltd" orders@kadianga.co.ke', // sender address
         to: `kennedyojwang57@gmail.com,${req.body.email}`, // list of receivers
-    subject: 'Subscription Request',
+        subject: 'Subscription Request',
         html:output // html body
     };
 
